@@ -1,0 +1,2 @@
+-Get new crystal generation
+-Get new Player class
