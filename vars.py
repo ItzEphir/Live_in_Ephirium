@@ -15,12 +15,16 @@ loaded2 = False
 escapePressed = False
 
 # Базовые загрузки: экран загрузки, фон
+logo = pygame.image.load("files/images/logo.png")
 loadScreen = pygame.image.load("files/images/loadScreen.png")
 loadScreen = pygame.transform.scale(loadScreen, (loadScreen.get_width() * 2, loadScreen.get_height() * 2))
 loadHalfFill = None
 loadFill = None
 bg = pygame.image.load("files/images/bg.png")
 bg = pygame.transform.scale(bg, (bg.get_width() * 2, bg.get_height() * 2))
+
+logo_counter = 0
+logo_counter_set = 0
 
 # Переменные, используемые в коде программы
 gray = None     # Серый цвет

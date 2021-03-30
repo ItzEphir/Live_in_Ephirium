@@ -9,6 +9,28 @@ from Crystal import *
 # Инициализация pygame
 pygame.init()
 
+# Красивый логотип
+def screenSaver():
+    global screen, logo_counter, logo_counter_set
+    # Белый фон
+    display.fill((255, 255, 255))
+
+    # Прозрачность
+    logo.set_alpha(logo_counter)
+    # Вывод лого
+    display.blit(logo, (0, 0))
+    # Изменение прозрачности
+    if logo_counter_set == 1 and logo_counter < 255:
+        logo_counter += 3
+        logo_counter_set = 0
+        return 0
+    if logo_counter == 255 and logo_counter_set == 1:
+        # Выход
+        screen = "Загрузка"
+        return 0
+    logo_counter_set += 1
+    return 0
+
 # Загрузка перед началом игры
 def load():
     global screen, loaded1, loaded2, background, loadFill, loadHalfFill
@@ -104,13 +126,12 @@ def loadingBeforePlay():
         # Экран загрузки
         display.blit(loadFill, ((WIDTH - (WIDTH - 40)), HEIGHT - 200))
         display.blit(loadScreen, (WIDTH - (WIDTH - 40), HEIGHT - 200))
-        pygame.time.delay(500)
+        # scheme = []
         loaded1 = False
         loaded2 = False
         # Выход
         screen = "Играть2"
         return 0
-
 
 # Меню
 def menu():
@@ -185,20 +206,11 @@ def printCrystal():
 def printFloor():
     # Переписать!!!!!
     for i in range(0, 6):
-        display.blit(floorPart, (228 * i, 90))
-        display.blit(floorPart, (228 * i, 180))
-        display.blit(floorPart, (228 * i, 270))
-        display.blit(floorPart, (228 * i, 360))
-        display.blit(floorPart, (228 * i, 450))
-        display.blit(floorPart, (228 * i, 540))
+        for j in range(1, 7):
+            display.blit(floorPart, (228 * i - 10, 90 * j))
     for i in range(0, 5):
-        display.blit(floorPart, (114 + 228 * i, 45))
-        display.blit(floorPart, (114 + 228 * i, 45 + 90))
-        display.blit(floorPart, (114 + 228 * i, 45 + 180))
-        display.blit(floorPart, (114 + 228 * i, 45 + 270))
-        display.blit(floorPart, (114 + 228 * i, 45 + 360))
-        display.blit(floorPart, (114 + 228 * i, 45 + 450))
-        display.blit(floorPart, (114 + 228 * i, 45 + 540))
+        for j in range(0, 7):
+            display.blit(floorPart, (114 + 228 * i - 10, 45 + 90 * j))
 
 # Цикл игры
 def game():
@@ -221,6 +233,8 @@ def game():
 
         # Экраны
         if screen == 0:
+            screenSaver()
+        elif screen == "Загрузка":
             load()
         elif screen == "Меню":
             menu()
