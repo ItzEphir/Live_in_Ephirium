@@ -1,17 +1,23 @@
+# Импорт
 import pygame
 from engine import display
 
+# Инициализация pygame
 pygame.init()
 
+# Игрок
 class Player:
+    # Инициализация
     def __init__(self, image, x, y):
-        self.image = image
-        self.x = x
+        self.image = image  # Картинка
+        self.x = x          # Положение
         self.y = y
 
+    # Вывод
     def set(self):
         display.blit(self.image, (self.x, self.y))
 
+    # Определение движения
     def move(self, where):
         if where == "right_up":
             self.__move_right_up()
