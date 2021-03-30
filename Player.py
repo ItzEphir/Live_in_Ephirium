@@ -1,6 +1,4 @@
-import contextlib
-with contextlib.redirect_stdout(None):
-    import pygame
+import pygame
 from engine import display
 
 pygame.init()
@@ -16,32 +14,32 @@ class Player:
 
     def move(self, where):
         if where == "right_up":
-            self.move_right_up()
+            self.__move_right_up()
         elif where == "right_down":
-            self.move_right_down()
+            self.__move_right_down()
         elif where == "left_up":
-            self.move_left_up()
+            self.__move_left_up()
         elif where == "left_down":
-            self.move_left_down()
+            self.__move_left_down()
         elif where == "up":
-            self.move_up()
+            self.__move_up()
         elif where == "down":
-            self.move_down()
+            self.__move_down()
 
-    def move_right_up(self):
+    def __move_right_up(self):
         pass
 
-    def move_left_up(self):
+    def __move_left_up(self):
         pass
 
-    def move_right_down(self):
+    def __move_right_down(self):
         pass
 
-    def move_left_down(self):
+    def __move_left_down(self):
         pass
 
-    def move_down(self):
+    def __move_down(self):
         pass
 
-    def move_up(self):
+    def __move_up(self):
         pass
