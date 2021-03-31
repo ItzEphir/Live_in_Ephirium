@@ -118,7 +118,7 @@ def loadingBeforePlay():
         # Картинка кристалла
         crystalImage = pygame.image.load("files/images/crystal.png")
         # Элемент класса Player (см. Player.py)
-        player = Player(player_image, 40, 64)
+        player = Player(player_image, 36, 90)
         # Генерация расположения кристаллов
         crystalPlace = [rand(0, 105), rand(228, 333), rand(456, 561), rand(684, 789), rand(912, 1017), rand(1140, 1245),
                         rand(0, 105), rand(228, 333), rand(456, 561), rand(684, 789), rand(912, 1017), rand(1140, 1245)]
@@ -194,6 +194,19 @@ def play():
     # Вывод игрока
     player.set()
 
+    if button(player.x + 114, player.y - 45, 72, 90, ""):
+        player.move("right_up")
+    elif button(player.x - 114, player.y - 45, 72, 90, ""):
+        player.move("left_up")
+    elif button(player.x + 114, player.y + 45, 72, 90, ""):
+        player.move("right_down")
+    elif button(player.x - 114, player.y + 45, 72, 90, ""):
+        player.move("left_down")
+    elif button(player.x, player.y + 90, 72, 90, ""):
+        player.move("down")
+    elif button(player.x, player.y - 90, 72, 90, ""):
+        player.move("up")
+
     # Возможность выхода нажатием escape
     if keys[pygame.K_ESCAPE]:
         # Проверка на долговременное нажатие (если убрать - баги)
@@ -222,81 +235,6 @@ def printFloor():
         partFloor.set()
     for partFloor in floor2:
         partFloor.set()
-
-def changeMove():
-    global line
-    a = player.get()
-    positionPlayer = [a[1], a[2]]
-    floor1 = floor[0]
-    floor2 = floor[1]
-    positionFloorFirstType = []
-    positionFloorSecondType = []
-    for partFloorFirstType in floor1:
-        positionFloorFirstType.append([partFloorFirstType.get()[1], partFloorFirstType.get()[2]])
-    for partFloorSecondType in floor2:
-        positionFloorSecondType.append([partFloorSecondType.get()[1], partFloorSecondType.get()[2]])
-
-    for part in positionFloorFirstType:
-        if positionPlayer == part:
-            line = 1
-    for part in positionFloorSecondType:
-        if positionPlayer == part:
-            line = 2
-
-    print(positionFloorFirstType)
-    print(positionFloorSecondType)
-
-    around = []
-    if line == 1:
-        if player.x - 114 >= 104 and player.y - 45 >= 45:
-            around.append([player.x - 114, player.y - 45])
-        else:
-            around.append([None, None])
-        if player.x + 114 <= 1016 and player.y - 45 >= 45:
-            around.append([player.x + 114, player.y - 45])
-        else:
-            around.append([None, None])
-        if player.x + 228 <= 1130:
-            around.append([player.x + 114, player.y])
-        else:
-            around.append([None, None])
-        if player.x + 114 <= 1016 and player.y + 45 <= 585:
-            around.append([player.x + 114, player.y + 45])
-        else:
-            around.append([None, None])
-        if player.x - 114 >= 104 and player.y + 45 <= 585:
-            around.append([player.x - 114, player.y + 45])
-        else:
-            around.append([None, None])
-        if player.x - 228 >= -10:
-            around.append([player.x - 288, player.y])
-        else:
-            around.append([None, None])
-    elif line == 2:
-        if player.x - 114 >= -10 and player.y - 45 >= 90:
-            around.append([player.x - 114, player.y - 45])
-        else:
-            around.append([None, None])
-        if player.x + 114 <= 1130 and player.y - 45 >= 90:
-            around.append([player.x + 114, player.y - 45])
-        else:
-            around.append([None, None])
-        if player.x + 228 <= 1016:
-            around.append([player.x + 90])
-        else:
-            around.append([None, None])
-        if player.x + 114 <= 1130 and player.y + 45 <= 540:
-            around.append([player.x + 114, player.y + 45])
-        else:
-            around.append([None, None])
-        if player.x - 114 >= -0 and player.y + 45 <= 540:
-            around.append([player.x - 114, player.y + 45])
-        else:
-            around.append([None, None])
-        if player.x - 228 >= 104:
-            around.append([player.x - 288, player.y])
-        else:
-            around.append([None, None])
 
 # Цикл игры
 def game():
@@ -330,7 +268,6 @@ def game():
             loadingBeforePlay()
         elif screen == "Играть2":
             play()
-            changeMove()
 
         # Обновение экрана
         pygame.display.update()
