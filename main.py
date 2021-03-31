@@ -5,6 +5,7 @@ from engine import *
 from vars import *
 from Player import *
 from Crystal import *
+from Floor_Part import *
 
 # Инициализация pygame
 pygame.init()
@@ -75,7 +76,7 @@ def load():
 
 # Загрузка перед игрой
 def loadingBeforePlay():
-    global screen, player, gray, floorPart, loaded1, loaded2, player_image
+    global screen, player, gray, floorPart, loaded1, loaded2, player_image, floor
     global crystals, crystalPlace, needCrystal, crystalImage
 
     # Фон
@@ -94,6 +95,17 @@ def loadingBeforePlay():
         # Часть пола
         floorPart = pygame.image.load("files/images/floorPart.png")
         floorPart = pygame.transform.scale(floorPart, (floorPart.get_width() * 2, floorPart.get_height() * 2))
+        # Часть пола
+        floor1 = []
+        floor2 = []
+        # Запись всего поля
+        for i in range(0, 6):
+            for j in range(1, 7):
+                floor1.append(Floor_Part(floorPart, 228 * i - 10, 90 * j))
+        for i in range(0, 5):
+            for j in range(0, 7):
+                floor2.append(Floor_Part(floorPart, 114 + 228 * i - 10, 45 + 90 * j))
+        floor = [floor1, floor2]
         loaded1 = True
         return 0
 
@@ -204,13 +216,87 @@ def printCrystal():
 
 # Вывод пола
 def printFloor():
-    # Переписать!!!!!
-    for i in range(0, 6):
-        for j in range(1, 7):
-            display.blit(floorPart, (228 * i - 10, 90 * j))
-    for i in range(0, 5):
-        for j in range(0, 7):
-            display.blit(floorPart, (114 + 228 * i - 10, 45 + 90 * j))
+    floor1 = floor[0]
+    floor2 = floor[1]
+    for partFloor in floor1:
+        partFloor.set()
+    for partFloor in floor2:
+        partFloor.set()
+
+def changeMove():
+    global line
+    a = player.get()
+    positionPlayer = [a[1], a[2]]
+    floor1 = floor[0]
+    floor2 = floor[1]
+    positionFloorFirstType = []
+    positionFloorSecondType = []
+    for partFloorFirstType in floor1:
+        positionFloorFirstType.append([partFloorFirstType.get()[1], partFloorFirstType.get()[2]])
+    for partFloorSecondType in floor2:
+        positionFloorSecondType.append([partFloorSecondType.get()[1], partFloorSecondType.get()[2]])
+
+    for part in positionFloorFirstType:
+        if positionPlayer == part:
+            line = 1
+    for part in positionFloorSecondType:
+        if positionPlayer == part:
+            line = 2
+
+    print(positionFloorFirstType)
+    print(positionFloorSecondType)
+
+    around = []
+    if line == 1:
+        if player.x - 114 >= 104 and player.y - 45 >= 45:
+            around.append([player.x - 114, player.y - 45])
+        else:
+            around.append([None, None])
+        if player.x + 114 <= 1016 and player.y - 45 >= 45:
+            around.append([player.x + 114, player.y - 45])
+        else:
+            around.append([None, None])
+        if player.x + 228 <= 1130:
+            around.append([player.x + 114, player.y])
+        else:
+            around.append([None, None])
+        if player.x + 114 <= 1016 and player.y + 45 <= 585:
+            around.append([player.x + 114, player.y + 45])
+        else:
+            around.append([None, None])
+        if player.x - 114 >= 104 and player.y + 45 <= 585:
+            around.append([player.x - 114, player.y + 45])
+        else:
+            around.append([None, None])
+        if player.x - 228 >= -10:
+            around.append([player.x - 288, player.y])
+        else:
+            around.append([None, None])
+    elif line == 2:
+        if player.x - 114 >= -10 and player.y - 45 >= 90:
+            around.append([player.x - 114, player.y - 45])
+        else:
+            around.append([None, None])
+        if player.x + 114 <= 1130 and player.y - 45 >= 90:
+            around.append([player.x + 114, player.y - 45])
+        else:
+            around.append([None, None])
+        if player.x + 228 <= 1016:
+            around.append([player.x + 90])
+        else:
+            around.append([None, None])
+        if player.x + 114 <= 1130 and player.y + 45 <= 540:
+            around.append([player.x + 114, player.y + 45])
+        else:
+            around.append([None, None])
+        if player.x - 114 >= -0 and player.y + 45 <= 540:
+            around.append([player.x - 114, player.y + 45])
+        else:
+            around.append([None, None])
+        if player.x - 228 >= 104:
+            around.append([player.x - 288, player.y])
+        else:
+            around.append([None, None])
 
 # Цикл игры
 def game():
@@ -244,6 +330,7 @@ def game():
             loadingBeforePlay()
         elif screen == "Играть2":
             play()
+            changeMove()
 
         # Обновение экрана
         pygame.display.update()

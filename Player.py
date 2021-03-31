@@ -18,7 +18,7 @@ class Player:
         display.blit(self.image, (self.x, self.y))
 
     # Определение движения
-    def move(self, where):
+    def move(self, where, move_to):
         if where == "right_up":
             self.__move_right_up()
         elif where == "right_down":
@@ -49,3 +49,6 @@ class Player:
 
     def __move_up(self):
         pass
+
+    def get(self):
+        return [self.image, self.x, self.y]

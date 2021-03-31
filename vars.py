@@ -29,6 +29,7 @@ logo_counter_set = 0
 # Переменные, используемые в коде программы
 gray = None     # Серый цвет
 floorPart = None    # Часть пола
+floor = None        # Пол
 background = None   # Фон
 crystalImage = None     # Картинка кристалла
 crystalPlace = None     # Места кристаллов
@@ -36,3 +37,4 @@ needCrystal = None      # Нужен ли кристалл (я философ)
 player_image = None     # Картинка игрока
 player = None           # Игрок
 keys = None             # Нажатие клавиш
+line = 0
