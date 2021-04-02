@@ -17,7 +17,7 @@ def screenSaver():
     display.fill((255, 255, 255))
 
     # Прозрачность
-    logo.set_alpha(logo_counter)
+    logo.set_alpha(int(logo_counter))
     # Вывод лого
     display.blit(logo, (0, 0))
     # Изменение прозрачности
@@ -44,9 +44,10 @@ def load():
         display.blit(loadScreen, (WIDTH - (WIDTH - 40), HEIGHT - 200))
 
         # Наполовину заполненная полоса загрузки
-        loadHalfFill = pygame.image.load("files/images/loadHalfFill.png")
+        loadHalfFill = pygame.image.load("files/images/loadHalfFill.png").convert_alpha()
         loadHalfFill = pygame.transform.scale(loadHalfFill,
-                                              (loadHalfFill.get_width() * 2, loadHalfFill.get_height() * 2))
+                                              (loadHalfFill.get_width() * 2,
+                                               loadHalfFill.get_height() * 2)).convert_alpha()
         loaded1 = True
         return 0
 
@@ -57,11 +58,14 @@ def load():
         display.blit(loadScreen, (WIDTH - (WIDTH - 40), HEIGHT - 200))
 
         # Фон
-        background = pygame.image.load("files/images/background.png")
-        background = pygame.transform.scale(background, (background.get_width() * 2, background.get_height() * 2))
+        background = pygame.image.load("files/images/background.png").convert_alpha()
+        background = pygame.transform.scale(background, (background.get_width() * 2,
+                                                         background.get_height() * 2)).convert_alpha()
+
         # Заполненная строка загрузки
-        loadFill = pygame.image.load("files/images/loadFill.png")
-        loadFill = pygame.transform.scale(loadFill, (loadFill.get_width() * 2, loadFill.get_height() * 2))
+        loadFill = pygame.image.load("files/images/loadFill.png").convert_alpha()
+        loadFill = pygame.transform.scale(loadFill, (loadFill.get_width() * 2,
+                                                     loadFill.get_height() * 2)).convert_alpha()
         loaded2 = True
         return 0
     else:
@@ -88,13 +92,15 @@ def loadingBeforePlay():
         display.blit(loadScreen, (WIDTH - (WIDTH - 40), HEIGHT - 200))
 
         # Картинка игрока
-        player_image = pygame.image.load("files/images/player.png")
+        player_image = pygame.image.load("files/images/player_boy.png").convert_alpha()
         # Серый фон
-        gray = pygame.image.load("files/images/Gray.png")
-        gray = pygame.transform.scale(gray, (gray.get_width() * 2, gray.get_height() * 2))
+        gray = pygame.image.load("files/images/Gray.png").convert_alpha()
+        gray = pygame.transform.scale(gray, (gray.get_width() * 2,
+                                             gray.get_height() * 2)).convert_alpha()
         # Часть пола
-        floorPart = pygame.image.load("files/images/floorPart.png")
-        floorPart = pygame.transform.scale(floorPart, (floorPart.get_width() * 2, floorPart.get_height() * 2))
+        floorPart = pygame.image.load("files/images/floorPart.png").convert_alpha()
+        floorPart = pygame.transform.scale(floorPart, (floorPart.get_width() * 2,
+                                                       floorPart.get_height() * 2)).convert_alpha()
         # Часть пола
         floor1 = []
         floor2 = []
@@ -116,7 +122,7 @@ def loadingBeforePlay():
         display.blit(loadScreen, (WIDTH - (WIDTH - 40), HEIGHT - 200))
 
         # Картинка кристалла
-        crystalImage = pygame.image.load("files/images/crystal.png")
+        crystalImage = pygame.image.load("files/images/crystal.png").convert_alpha()
         # Элемент класса Player (см. Player.py)
         player = Player(player_image, 36, 90)
         # Генерация расположения кристаллов

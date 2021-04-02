@@ -15,13 +15,14 @@ loaded2 = False
 escapePressed = False
 
 # Базовые загрузки: экран загрузки, фон
-logo = pygame.image.load("files/images/logo.png")
-loadScreen = pygame.image.load("files/images/loadScreen.png")
-loadScreen = pygame.transform.scale(loadScreen, (loadScreen.get_width() * 2, loadScreen.get_height() * 2))
+logo = pygame.image.load("files/images/logo.png").convert_alpha()
+loadScreen = pygame.image.load("files/images/loadScreen.png").convert_alpha()
+loadScreen = pygame.transform.scale(loadScreen, (loadScreen.get_width() * 2,
+                                                 loadScreen.get_height() * 2)).convert_alpha()
 loadHalfFill = None
 loadFill = None
-bg = pygame.image.load("files/images/bg.png")
-bg = pygame.transform.scale(bg, (bg.get_width() * 2, bg.get_height() * 2))
+bg = pygame.image.load("files/images/bg.png").convert_alpha()
+bg = pygame.transform.scale(bg, (bg.get_width() * 2, bg.get_height() * 2)).convert_alpha()
 
 logo_counter = 0
 logo_counter_set = 0
