@@ -10,6 +10,7 @@ from Floor_Part import *
 # Инициализация pygame
 pygame.init()
 
+
 # Красивый логотип
 def screenSaver():
     global screen, logo_counter, logo_counter_set
@@ -131,6 +132,11 @@ def loadingBeforePlay():
         # Генерация надобности кристаллов
         needCrystal = [rand(0, 5), rand(0, 5), rand(0, 5), rand(0, 5), rand(0, 5), rand(0, 5),
                        rand(0, 5), rand(0, 5), rand(0, 5), rand(0, 5), rand(0, 5), rand(0, 5)]
+        # Если кристаллов вообще нет
+        if (needCrystal[0] != 1 and needCrystal[1] != 1 and needCrystal[2] != 1 and needCrystal[3] != 1 and
+                needCrystal[4] != 1 and needCrystal[5] != 1 and needCrystal[6] != 1 and needCrystal[7] != 1 and
+                needCrystal[8] != 1 and needCrystal[9] != 1 and needCrystal[10] != 1 and needCrystal[11] != 1):
+            needCrystal[rand(0, 11)] = 1
         # Добавление сведений о кристаллах в общий список
         crystals = []
         for i in range(0, 11):
@@ -200,17 +206,24 @@ def play():
     # Вывод игрока
     player.set()
 
-    if button(player.x + 114, player.y - 45, 72, 90, ""):
+    # Возможность перемещения
+    if button(player.get_coor()[0] + 114, player.get_coor()[1] - 45, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
+              True, player) and player.get_coor()[0] + 114 <= 1244 and player.get_coor()[1] - 45 >= 45:
         player.move("right_up")
-    elif button(player.x - 114, player.y - 45, 72, 90, ""):
+    elif button(player.get_coor()[0] - 114, player.get_coor()[1] - 45, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
+                True, player) and player.get_coor()[0] - 114 >= -10 and player.get_coor()[1] - 45 >= 45:
         player.move("left_up")
-    elif button(player.x + 114, player.y + 45, 72, 90, ""):
+    elif button(player.get_coor()[0] + 114, player.get_coor()[1] + 45, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
+                True, player) and player.get_coor()[0] + 114 <= 1244 and player.get_coor()[1] + 45 <= 585:
         player.move("right_down")
-    elif button(player.x - 114, player.y + 45, 72, 90, ""):
+    elif button(player.get_coor()[0] - 114, player.get_coor()[1] + 45, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
+                True, player) and player.get_coor()[0] - 114 >= -10 and player.get_coor()[1] + 45 <= 585:
         player.move("left_down")
-    elif button(player.x, player.y + 90, 72, 90, ""):
+    elif button(player.get_coor()[0], player.get_coor()[1] + 90, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
+                True, player) and player.get_coor()[1] + 90 <= 585:
         player.move("down")
-    elif button(player.x, player.y - 90, 72, 90, ""):
+    elif button(player.get_coor()[0], player.get_coor()[1] - 90, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
+                True, player) and player.get_coor()[1] - 90 >= 45:
         player.move("up")
 
     # Возможность выхода нажатием escape
@@ -227,11 +240,34 @@ def play():
 
 # Вывод кристаллов
 def printCrystal():
+    global needCrystal, crystalPlace, crystals
     # Цикл обеспечивает нам проверку надобности кристаллов в конкретной позиции, всего позиций - 12
     for i in range(0, 11):
         if needCrystal[i] == 1:
             # Вывод кристаллов (см. Crystal.py)
             crystals[i].set()
+            # Перегенерация кристаллов
+            if button(crystals[i].get_position()[0], crystals[i].get_position()[1], 75, 75, ""):
+                # Генерация расположения кристаллов
+                crystalPlace = [rand(0, 105), rand(228, 333), rand(456, 561), rand(684, 789), rand(912, 1017),
+                                rand(1140, 1245),
+                                rand(0, 105), rand(228, 333), rand(456, 561), rand(684, 789), rand(912, 1017),
+                                rand(1140, 1245)]
+                # Генерация надобности кристаллов
+                needCrystal = [rand(0, 5), rand(0, 5), rand(0, 5), rand(0, 5), rand(0, 5), rand(0, 5),
+                               rand(0, 5), rand(0, 5), rand(0, 5), rand(0, 5), rand(0, 5), rand(0, 5)]
+                # Если кристаллов нет
+                if (needCrystal[0] != 1 and needCrystal[1] != 1 and needCrystal[2] != 1 and needCrystal[3] != 1 and
+                        needCrystal[4] != 1 and needCrystal[5] != 1 and needCrystal[6] != 1 and needCrystal[7] != 1 and
+                        needCrystal[8] != 1 and needCrystal[9] != 1 and needCrystal[10] != 1 and needCrystal[11] != 1):
+                    needCrystal[rand(0, 11)] = 1
+                # Добавление сведений о кристаллах в общий список
+                crystals = []
+                for x in range(0, 11):
+                    if x < 6:
+                        crystals.append(Crystal(crystalImage, crystalPlace[x], 0))
+                    else:
+                        crystals.append(Crystal(crystalImage, crystalPlace[x], 645))
 
 # Вывод пола
 def printFloor():
