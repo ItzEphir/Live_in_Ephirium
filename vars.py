@@ -38,4 +38,4 @@ needCrystal = None      # Нужен ли кристалл (я философ)
 player_image = None     # Картинка игрока
 player = None           # Игрок
 keys = None             # Нажатие клавиш
-line = 0
+line = 0                # "Линия" пола

@@ -22,6 +22,10 @@ class Crystal:
         self.image = pygame.transform.scale(self.image,
                                             (self.image.get_width() * multx, self.image.get_height() * multy))
 
+    # Получение информации
+    def get(self):
+        return [self.image, self.x, self.y]
+
     # Получение позиции
     def get_position(self):
         return [self.x, self.y]
