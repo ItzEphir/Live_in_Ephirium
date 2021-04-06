@@ -6,6 +6,8 @@ from vars import *
 from Player import *
 from Crystal import *
 from Floor_Part import *
+from Enemy import *
+from NPC import *
 
 # Инициализация pygame
 pygame.init()
@@ -82,7 +84,7 @@ def load():
 # Загрузка перед игрой
 def loadingBeforePlay():
     global screen, player, gray, floorPart, loaded1, loaded2, player_image, floor
-    global crystals, crystalPlace, needCrystal, crystalImage
+    global crystals, crystalPlace, needCrystal, crystalImage, enemy
 
     # Фон
     display.blit(background, (0, 0))
@@ -93,7 +95,7 @@ def loadingBeforePlay():
         display.blit(loadScreen, (WIDTH - (WIDTH - 40), HEIGHT - 200))
 
         # Картинка игрока
-        player_image = pygame.image.load("files/images/player_boy.png").convert_alpha()
+        player_image = pygame.image.load("files/images/player_girl.png").convert_alpha()
         # Серый фон
         gray = pygame.image.load("files/images/Gray.png").convert_alpha()
         gray = pygame.transform.scale(gray, (gray.get_width() * 2,
@@ -105,6 +107,7 @@ def loadingBeforePlay():
         # Часть пола
         floor1 = []
         floor2 = []
+        enemy = Enemy(player_image, 264, 90)
         # Запись всего поля
         for i in range(0, 6):
             for j in range(1, 7):
@@ -125,7 +128,7 @@ def loadingBeforePlay():
         # Картинка кристалла
         crystalImage = pygame.image.load("files/images/crystal.png").convert_alpha()
         # Элемент класса Player (см. Player.py)
-        player = Player(player_image, 36, 90)
+        player = Player(player_image, 36, 90, 1)
         # Генерация расположения кристаллов
         crystalPlace = [rand(0, 105), rand(228, 333), rand(456, 561), rand(684, 789), rand(912, 1017), rand(1140, 1245),
                         rand(0, 105), rand(228, 333), rand(456, 561), rand(684, 789), rand(912, 1017), rand(1140, 1245)]
@@ -206,25 +209,52 @@ def play():
     # Вывод игрока
     player.set()
 
+    # Вывод врага
+    enemy.set()
+
+    # Координаты игрока
+    coor_player = player.get_coor()
+
+    # Координаты врага
+    coor_enemy = enemy.get_coor()
+
     # Возможность перемещения
-    if button(player.get_coor()[0] + 114, player.get_coor()[1] - 45, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
-              True, player) and player.get_coor()[0] + 114 <= 1244 and player.get_coor()[1] - 45 >= 45:
-        player.move("right_up")
-    elif button(player.get_coor()[0] - 114, player.get_coor()[1] - 45, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
-                True, player) and player.get_coor()[0] - 114 >= -10 and player.get_coor()[1] - 45 >= 45:
-        player.move("left_up")
-    elif button(player.get_coor()[0] + 114, player.get_coor()[1] + 45, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
-                True, player) and player.get_coor()[0] + 114 <= 1244 and player.get_coor()[1] + 45 <= 585:
-        player.move("right_down")
-    elif button(player.get_coor()[0] - 114, player.get_coor()[1] + 45, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
-                True, player) and player.get_coor()[0] - 114 >= -10 and player.get_coor()[1] + 45 <= 585:
-        player.move("left_down")
-    elif button(player.get_coor()[0], player.get_coor()[1] + 90, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
-                True, player) and player.get_coor()[1] + 90 <= 585:
-        player.move("down")
-    elif button(player.get_coor()[0], player.get_coor()[1] - 90, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
-                True, player) and player.get_coor()[1] - 90 >= 45:
-        player.move("up")
+    if button(coor_player[0] + 114, coor_player[1] - 45, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
+              True, player) and coor_player[0] + 114 <= 1244 and coor_player[1] - 45 >= 45:
+        if not(coor_player[0] + 114 == coor_enemy[0] and coor_player[1] - 45 == coor_enemy[1]):
+            player.move("right_up")
+        else:
+            player.attack(enemy)
+    elif button(coor_player[0] - 114, coor_player[1] - 45, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
+                True, player) and coor_player[0] - 114 >= -10 and coor_player[1] - 45 >= 45:
+        if not(coor_player[0] - 114 == coor_enemy[0] and coor_player[1] - 45 == coor_enemy[1]):
+            player.move("left_up")
+        else:
+            player.attack(enemy)
+    elif button(coor_player[0] + 114, coor_player[1] + 45, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
+                True, player) and coor_player[0] + 114 <= 1244 and coor_player[1] + 45 <= 585:
+        if not(coor_player[0] + 114 == coor_enemy[0] and coor_player[1] + 45 == coor_enemy[1]):
+            player.move("right_down")
+        else:
+            player.attack(enemy)
+    elif button(coor_player[0] - 114, coor_player[1] + 45, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
+                True, player) and coor_player[0] - 114 >= -10 and coor_player[1] + 45 <= 585:
+        if not(coor_player[0] - 114 == coor_enemy[0] and coor_player[1] + 45 == coor_enemy[1]):
+            player.move("left_down")
+        else:
+            player.attack(enemy)
+    elif button(coor_player[0], coor_player[1] + 90, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
+                True, player) and coor_player[1] + 90 <= 585:
+        if not(coor_player[0] == coor_enemy[0] and coor_player[1] + 90 == coor_enemy[1]):
+            player.move("down")
+        else:
+            player.attack(enemy)
+    elif button(coor_player[0], coor_player[1] - 90, 72, 90, "", 0, 0, (0, 0, 0), 0, 50, 10, 25, None,
+                True, player) and coor_player[1] - 90 >= 45:
+        if not(coor_player[0] == coor_enemy[0] and coor_player[1] - 90 == coor_enemy[1]):
+            player.move("up")
+        else:
+            player.attack(enemy)
 
     # Возможность выхода нажатием escape
     if keys[pygame.K_ESCAPE]:

@@ -41,7 +41,8 @@ clock = pygame.time.Clock()
 
 # Кнопка
 def button(x, y, width, height, message, color=0, activeColor=0, colorTitle=(0, 0, 0), activeColorTitle=0,
-           hitBoxX=50, hitBoxY=10, font_size=25, image=None, withPlayer=False, player=None):  # Положение кнопки, размер кнопки,
+           hitBoxX=50, hitBoxY=10, font_size=25, image=None, withPlayer=False, player=None):
+                                                                                # Положение кнопки, размер кнопки,
                                                                                 # Надпись, цвет, цвет при наведении,
                                                                                 # Цвет текста, активный цвет текста,
                                                                                 # Регуляровка хитбоксов, размер шрифта,
@@ -77,24 +78,43 @@ def button(x, y, width, height, message, color=0, activeColor=0, colorTitle=(0, 
                 # Вывод текста
                 printText(message, x + width // 2 - hitBoxX, y + (height // 2 - hitBoxY), (80, 80, 80),
                           font_size)
+
             # Если кнопка взаимодействует с игроком
             if withPlayer:
                 # Если наведено на эту область, то менять картинку игрока на соответствующую будущему перемещению
                 if x == player.get_coor()[0] + 114:
                     if y == player.get_coor()[1] - 45:
-                        player.change_image(pygame.image.load("files/images/player/boy/boy_right.png"))
+                        if player.get()[3] == 0:
+                            player.change_image(pygame.image.load("files/images/player/boy/boy_right.png"))
+                        elif player.get()[3] == 1:
+                            player.change_image(pygame.image.load("files/images/player/girl/girl_right.png"))
                     elif y == player.get_coor()[1] + 45:
-                        player.change_image(pygame.image.load("files/images/player/boy/boy_right.png"))
+                        if player.get()[3] == 0:
+                            player.change_image(pygame.image.load("files/images/player/boy/boy_right.png"))
+                        elif player.get()[3] == 1:
+                            player.change_image(pygame.image.load("files/images/player/girl/girl_right.png"))
                 elif x == player.get_coor()[0] - 114:
                     if y == player.get_coor()[1] - 45:
-                        player.change_image(pygame.image.load("files/images/player/boy/boy_left.png"))
+                        if player.get()[3] == 0:
+                            player.change_image(pygame.image.load("files/images/player/boy/boy_left.png"))
+                        elif player.get()[3] == 1:
+                            player.change_image(pygame.image.load("files/images/player/girl/girl_left.png"))
                     elif y == player.get_coor()[1] + 45:
-                        player.change_image(pygame.image.load("files/images/player/boy/boy_left.png"))
+                        if player.get()[3] == 0:
+                            player.change_image(pygame.image.load("files/images/player/boy/boy_left.png"))
+                        elif player.get()[3] == 1:
+                            player.change_image(pygame.image.load("files/images/player/girl/girl_left.png"))
                 elif x == player.get_coor()[0]:
                     if y == player.get_coor()[1] + 90:
-                        player.change_image(pygame.image.load("files/images/player/boy/boy_forward.png"))
+                        if player.get()[3] == 0:
+                            player.change_image(pygame.image.load("files/images/player/boy/boy_forward.png"))
+                        elif player.get()[3] == 1:
+                            player.change_image(pygame.image.load("files/images/player/girl/girl_forward.png"))
                     elif y == player.get_coor()[1] - 90:
-                        player.change_image(pygame.image.load("files/images/player/boy/boy_behind.png"))
+                        if player.get()[3] == 0:
+                            player.change_image(pygame.image.load("files/images/player/boy/boy_behind.png"))
+                        elif player.get()[3] == 1:
+                            player.change_image(pygame.image.load("files/images/player/girl/girl_behind.png"))
 
             # Проверка клика
             if click[0] == 1:

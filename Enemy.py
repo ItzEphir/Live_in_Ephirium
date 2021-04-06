@@ -5,35 +5,32 @@ from engine import display
 # Инициализация pygame
 pygame.init()
 
-# Игрок
-class Player:
+# Враг
+class Enemy:
     # Инициализация
-    def __init__(self, image, x, y, sex=0, hp=100, damage=1):
-        self.__image = image  # Картинка
-        self.__x = x          # Положение
+    def __init__(self, image, x, y, sex=0, hp=100):    # Картинка, положение
+        self.__image = image
+        self.__x = x
         self.__y = y
         self.__sex = sex
         self.__hp = hp
-        self.__damage = damage
 
-    # Вывод
     def set(self):
         display.blit(self.__image, (self.__x, self.__y))
 
-    # Определение движения
     def move(self, where):
-        if where == "right_up":
+        if where == "right-up":
             self.__move_right_up()
-        elif where == "right_down":
+        elif where == "right-down":
             self.__move_right_down()
-        elif where == "left_up":
-            self.__move_left_up()
-        elif where == "left_down":
-            self.__move_left_down()
-        elif where == "up":
-            self.__move_up()
         elif where == "down":
             self.__move_down()
+        elif where == "left-down":
+            self.__move_left_down()
+        elif where == "left-up":
+            self.__move_left_up()
+        elif where == "up":
+            self.__move_up()
 
     def __move_right_up(self):
         self.__x += 114
@@ -85,14 +82,11 @@ class Player:
     def change_image(self, image):
         self.__image = image
 
-    # Атака!!!!
-    def attack(self, enemy):
-        enemy.change_hp(-self.__damage)
+    def change_hp(self, change):
+        self.__hp += change
 
-    # Получение всей инофрмации
     def get(self):
-        return [self.__image, self.__x, self.__y, self.__sex, self.__hp]
+        return self.__image, self.__x, self.__y
 
-    # Получение только координат
     def get_coor(self):
         return self.__x, self.__y

@@ -37,5 +37,6 @@ crystalPlace = None     # Места кристаллов
 needCrystal = None      # Нужен ли кристалл (я философ)
 player_image = None     # Картинка игрока
 player = None           # Игрок
+enemy = None            # Враг
 keys = None             # Нажатие клавиш
 line = 0                # "Линия" пола
