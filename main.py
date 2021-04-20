@@ -1,13 +1,13 @@
 # Импорт
 import pygame
 from random import randint as rand
-from engine import *
-from vars import *
-from Player import *
-from Crystal import *
-from Floor_Part import *
-from Enemy import *
-from NPC import *
+from files.pys.engine import *
+from files.pys.vars import *
+from files.pys.Player import *
+from files.pys.Crystal import *
+from files.pys.Floor_Part import *
+from files.pys.Enemy import *
+from files.pys.NPC import *
 
 # Инициализация pygame
 pygame.init()
@@ -37,9 +37,10 @@ def screenSaver():
 
 # Загрузка перед началом игры
 def load():
-    global screen, loaded1, loaded2, background, loadFill, loadHalfFill
+    global screen, loaded1, loaded2, background, loadFill, loadHalfFill, pressedCrystals
     # Фон
     display.blit(bg, (0, 0))
+    pressedCrystals = statistic
 
     # Первая половина загрузок
     if not loaded1 and not loaded2:
@@ -53,7 +54,6 @@ def load():
                                                loadHalfFill.get_height() * 2)).convert_alpha()
         loaded1 = True
         return 0
-
     # Вторая половина загрузок
     elif loaded1 and not loaded2:
         # Экран загрузки
@@ -71,6 +71,7 @@ def load():
                                                      loadFill.get_height() * 2)).convert_alpha()
         loaded2 = True
         return 0
+    # Третья (маленькая) часть загрузок
     else:
         # Экран загрузки
         display.blit(loadFill, ((WIDTH - (WIDTH - 40)), HEIGHT - 200))
@@ -81,10 +82,24 @@ def load():
         screen = "Меню"
         return 0
 
+# Сохранение статистики
+def save_stat(stat):
+    file = open("files/txts/stat.txt", "w")
+    file.write(str(stat))
+    file.close()
+
+# Чтение статистики
+def read_stat():
+    file = open("files/txts/stat.txt", "r")
+    stat = file.read()
+    stat = stat.split(".")
+    file.close()
+    return stat
+
 # Загрузка перед игрой
 def loadingBeforePlay():
     global screen, player, gray, floorPart, loaded1, loaded2, player_image, floor
-    global crystals, crystalPlace, needCrystal, crystalImage, enemy
+    global crystals, crystalPlace, needCrystal, crystalImage, enemy, pressedCrystals
 
     # Фон
     display.blit(background, (0, 0))
@@ -140,6 +155,7 @@ def loadingBeforePlay():
                 needCrystal[4] != 1 and needCrystal[5] != 1 and needCrystal[6] != 1 and needCrystal[7] != 1 and
                 needCrystal[8] != 1 and needCrystal[9] != 1 and needCrystal[10] != 1 and needCrystal[11] != 1):
             needCrystal[rand(0, 11)] = 1
+        pressedCrystals = read_stat()[0]
         # Добавление сведений о кристаллах в общий список
         crystals = []
         for i in range(0, 11):
@@ -149,6 +165,7 @@ def loadingBeforePlay():
                 crystals.append(Crystal(crystalImage, crystalPlace[i], 645))
         loaded2 = True
         return 0
+    # Третья (маленькая) часть загрузок
     else:
         # Экран загрузки
         display.blit(loadFill, ((WIDTH - (WIDTH - 40)), HEIGHT - 200))
@@ -169,6 +186,10 @@ def menu():
     # Кнопка начала игры
     if button(WIDTH // 2 - 100, HEIGHT // 2 - 100, 100, 100, "Play"):
         screen = "Играть"
+        return 0
+    elif button(WIDTH // 2 - 100, HEIGHT // 2 + 10, 100, 100, "Statistic"):
+        screen = "Статистика"
+        return 0
 
     # Выход нажатием клавиши escape
     if keys[pygame.K_ESCAPE]:
@@ -196,9 +217,28 @@ def you_exit():
         screen = "Меню"
         return False
 
+# Просмотр статистики
+def stats():
+    global screen, escapePressed
+    display.blit(background, (0, 0))
+    stat = read_stat()
+    printText(stat[0], WIDTH // 2 - 100, HEIGHT // 2 + 100)
+
+    # Выход нажатием клавиши escape
+    if keys[pygame.K_ESCAPE]:
+        # Проверка на долговременное нажатие (если убрать - баги)
+        if not escapePressed:
+            escapePressed = True
+            pygame.time.delay(120)
+    else:
+        # Продолжение проверки на долговременное нажатие
+        if escapePressed:
+            screen = "Меню"
+            escapePressed = False
+
 # Сама игра
 def play():
-    global screen, player, escapePressed
+    global screen, player, escapePressed, pressedCrystals
     # Фон
     display.blit(gray, (0, 0))
 
@@ -265,12 +305,14 @@ def play():
     else:
         # Продолжение проверки на долговременное нажатие
         if escapePressed:
+            save_stat(f"{str(pressedCrystals)}.0")
             screen = "Меню"
             escapePressed = False
 
 # Вывод кристаллов
 def printCrystal():
-    global needCrystal, crystalPlace, crystals
+    global needCrystal, crystalPlace, crystals, pressedCrystals
+    pressedCrystals = int(pressedCrystals)
     # Цикл обеспечивает нам проверку надобности кристаллов в конкретной позиции, всего позиций - 12
     for i in range(0, 11):
         if needCrystal[i] == 1:
@@ -278,6 +320,7 @@ def printCrystal():
             crystals[i].set()
             # Перегенерация кристаллов
             if button(crystals[i].get_position()[0], crystals[i].get_position()[1], 75, 75, ""):
+                pressedCrystals += 1
                 # Генерация расположения кристаллов
                 crystalPlace = [rand(0, 105), rand(228, 333), rand(456, 561), rand(684, 789), rand(912, 1017),
                                 rand(1140, 1245),
@@ -340,10 +383,14 @@ def game():
             loadingBeforePlay()
         elif screen == "Играть2":
             play()
+        elif screen == "Статистика":
+            stats()
 
         # Обновение экрана
         pygame.display.update()
 
 
+# Прочитать стату
+statistic = read_stat()
 # Вызов главного цикла
 game()

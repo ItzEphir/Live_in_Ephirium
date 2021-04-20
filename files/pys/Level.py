@@ -1,16 +1,18 @@
 # Импорт
 import pygame
-from engine import display
+from files.pys.engine import display
 
 # Инициализация pygame
 pygame.init()
 
-class Floor_Part:
+# Уровень
+class Level:
     # Инициализация
-    def __init__(self, image, x, y):    # Картинка, положение
+    def __init__(self, image, x, y, scheme):    # Картинка, положение, схема
         self.image = image
         self.x = x
         self.y = y
+        self.scheme = scheme
 
     # Вывод на экран
     def set(self):
@@ -18,4 +20,4 @@ class Floor_Part:
 
     # Получение информации
     def get(self):
-        return [self.image, self.x, self.y]
+        return [self.image, self.x, self.y, self.scheme]

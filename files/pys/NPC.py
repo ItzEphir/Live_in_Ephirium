@@ -1,6 +1,6 @@
 # Импорт
 import pygame
-from engine import display
+from files.pys.engine import display
 
 # Инициализация pygame
 pygame.init()

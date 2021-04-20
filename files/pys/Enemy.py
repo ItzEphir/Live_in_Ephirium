@@ -1,6 +1,6 @@
 # Импорт
 import pygame
-from engine import display
+from files.pys.engine import display
 
 # Инициализация pygame
 pygame.init()
@@ -8,16 +8,19 @@ pygame.init()
 # Враг
 class Enemy:
     # Инициализация
-    def __init__(self, image, x, y, sex=0, hp=100):    # Картинка, положение
+    def __init__(self, image, x, y, sex=0, hp=100, damage=1):    # Картинка, положение
         self.__image = image
         self.__x = x
         self.__y = y
         self.__sex = sex
         self.__hp = hp
+        self.__damage = damage
 
+    # Вывод на экран
     def set(self):
         display.blit(self.__image, (self.__x, self.__y))
 
+    # Движение
     def move(self, where):
         if where == "right-up":
             self.__move_right_up()
@@ -82,11 +85,18 @@ class Enemy:
     def change_image(self, image):
         self.__image = image
 
+    # Изменить здоровье
     def change_hp(self, change):
         self.__hp += change
 
+    # Атака!!!
+    def attack(self, objectToAttack):
+        objectToAttack.change_hp(-self.__damage)
+
+    # Получить информацию
     def get(self):
         return self.__image, self.__x, self.__y
 
+    # Получить координаты
     def get_coor(self):
         return self.__x, self.__y

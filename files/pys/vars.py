@@ -40,3 +40,4 @@ player = None           # Игрок
 enemy = None            # Враг
 keys = None             # Нажатие клавиш
 line = 0                # "Линия" пола
+pressedCrystals = 0     # Нажатые кристаллы
